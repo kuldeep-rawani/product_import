@@ -1,4 +1,5 @@
 *.pyc
+.pyc
 *.swp
 env.py
 migrations
