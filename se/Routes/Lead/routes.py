@@ -7,6 +7,7 @@ from se.Exceptions.SeException import SeException
 app = Flask(__name__)
 lead = Blueprint('lead' , __name__ , url_prefix='/lead management')
 
+
 @lead.route('/mail' , methods =['POST'])
 def store():
 	result = LeadController().store(request)
