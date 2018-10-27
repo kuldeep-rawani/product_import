@@ -12,7 +12,6 @@ class ProductController():
 	UPLOAD_FOLDER = os.getcwd()
 	
 	def upload_products(self, request):
-		print request.form.get('url')
 		if request.form.get('url') is not None:
 			data = get_csv_data_from_url(request.form.get('url'))
 		elif request.files is not None:
@@ -45,7 +44,6 @@ class ProductController():
 		if request.args.get('is_archived') is not None:
 			filter_params['is_archived'] = request.args.get('is_archived')
 		session = Session()
-		print filter_params, 'params...'
 		data = session.query(Product).filter_by(**filter_params).all()
 		result = []
 		for row in data:
@@ -56,7 +54,6 @@ class ProductController():
 			response['is_active'] = row.is_active
 			response['is_archived'] = row.is_archived
 			result.append(response)
-		print result
 		return result
 
 
