@@ -20,6 +20,7 @@ def upload_products():
 @product.route('/', methods=['GET'])
 def product_filter():
 	result = ProductController().product_filter(request)
+	return jsonify(result)
 
 	# response = app.response_class(
  #        response=json.dumps({'a': 222}),
