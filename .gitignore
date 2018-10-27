@@ -1,6 +1,5 @@
 *.pyc
 .pyc
 *.swp
-env.py
 fulfil
 migrations
