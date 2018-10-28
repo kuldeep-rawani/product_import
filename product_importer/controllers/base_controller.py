@@ -1,6 +1,7 @@
 from flask import Flask, make_response
 import flask
 
+""" Base Controller """
 class BaseController():
     def respond(self, status_code, data):
         response = {}

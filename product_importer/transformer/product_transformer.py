@@ -1,3 +1,0 @@
-
-def transform(data):
-	return {}
