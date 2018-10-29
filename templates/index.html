@@ -6,7 +6,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css')}}">
 </head>
 <body>
-	<div class="container-fluid pro-container" id="root">
+	<div class="loader">
+		<img src="/static/gif/loader.gif"/>
+	</div>
+	<div class="container-fluid pro-container">
 		<div class="card pro-card" >
 			<div class="row head-nav" >
 				<ul class="nav col-2">
@@ -21,7 +24,7 @@
 								<div class="custom-file row" style="margin-left: 15px; ">
 									<input type="file" class="custom-file-input col-6" id="upload">
 									<label class="custom-file-label col-6" id="upload-label" for="customFile"></label>
-									<button class="btn btn-outline-secondary" type="button" onclick="upload()">Upload</button>
+									<button class="btn btn-outline-secondary file-upload-botton" type="button" onclick="upload()">Upload</button>
 								</div>
 							</div>
 							<div class="row" style="margin-top: 3px;">
@@ -64,7 +67,12 @@
 </body>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-	<script type="text/javascript">		
+	<script type="text/javascript">
+
+
+		$('.file-upload-botton').click(function () {
+			$('.loader').show();
+		});	
 		function active() {
 			$.ajax({
 				url: "/products?is_active=true",
@@ -80,6 +88,7 @@
 				},
 				error: function(failure){
 					console.log("failure: ", failure);
+					alert(failure.responseJSON[0]["result"]);
 				}
 			});
 		}
@@ -110,13 +119,13 @@
 				data : formData,
 				processData: false,
 				contentType: false,
-				async: false,
 				enctype: 'multipart/form-data',
-				success: function(msg){
-					console.log("success: ", msg);
+				success: function(successMsg){
+					$('.loader').hide();
 				},
-				error: function(failure){
-					alert(failure.responseJSON[0]["result"]);
+				error: function(errorMsg){
+					$('.loader').hide();
+					alert(errorMsg.responseJSON[0]["result"]);
 				}
 			});
 		}
@@ -125,6 +134,7 @@
 			var formData = {
 				url: $("#searchURL").val()
 			};
+			// console.log("formData: ", formData);
 			$.ajax({
 				url : '/products/import',
 				type : 'POST',
@@ -135,7 +145,7 @@
 				error: function(failure){
 					console.log("failure: ", failure);
 					alert("Select a csv file or a valid url to upload");
-				}		       
+				}		
 			});
 		}
 
