@@ -16,7 +16,7 @@ class CustomException(Exception):
     # @param message string
     # @return response json
     """
-    def throw_se_exception(self):
+    def throw_fulfil_exception(self):
         response = flask.jsonify({
             'code': self.status_code,
             'data':[],

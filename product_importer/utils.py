@@ -2,6 +2,7 @@ from werkzeug.utils import secure_filename
 import os
 import csv
 import requests
+import json
 
 """ get file from request """
 def get_file(request):
@@ -68,7 +69,9 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
+def call_url(api_endpoint, params, headers):
+	r = requests.post(url = API_ENDPOINT, data = json.dumps(params), headers = headers) 
+	return r.text
 
 
 

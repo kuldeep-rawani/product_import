@@ -89,6 +89,11 @@ class ProductController():
 			session.close()
 		return result
 
-
-
+	""" webhook url when product gets created
+	 """
+	def webhook(self, request):
+		""" whatever we want to implement we can implement here
+		for now returing scucess message
+		"""
+		return True
 
