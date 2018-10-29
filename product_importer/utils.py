@@ -14,12 +14,17 @@ def get_secure_filename(file):
 """ get csv data """
 def get_csv_data(file):
 	file = save_file(file)
+	size = os.path.getsize(file)
+	if size < 1:
+		return False, 'File size should be in between 1KB to 100MB'
+	if size / 1024 > 100:
+		return False , 'File size should be in between 1KB to 100MB'
 	with open(file, 'r') as data:
 		data = csv.reader(data)
 		data = [row for row in data]
 		del data[0]
 	os.remove(file)
-	return data
+	return True, data
 
 """ get the directory to upload a file """
 def get_upload_folder():
@@ -36,7 +41,10 @@ def save_file(file):
 """ get csv data from url """
 def get_csv_data_from_url(url):
 	upload_folder = get_upload_folder()
-	response = requests.get(url)
+	try:
+		response = requests.get(url)
+	except Exception as e:
+		return False, 'Enter a valid csv url'
 	path = os.path.join(upload_folder, 'file' + '.csv')
 	with open(path, 'wb') as f:
 		f.write(response.content)
@@ -44,8 +52,13 @@ def get_csv_data_from_url(url):
 		data = csv.reader(data)
 		data = [row for row in data]
 		del data[0]
+	size = os.path.getsize(path)
+	if size < 1:
+		return False
+	if size / 1024 > 100:
+		return False 
 	os.remove(path)
-	return data
+	return True, data
 
 ##
 # Get Allowed Extension

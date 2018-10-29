@@ -12,30 +12,38 @@ class ProductController():
 	
 	""" upload products through csv file or url
 	@param request file or url
+	@response bool, response mg
 	 """
 	def upload_products(self, request):
 		try:
-			session = Session()
+			session = Session()	
 			if request.form.get('url') is not None:
-				data = get_csv_data_from_url(request.form.get('url'))
-			elif request.files is not None:
+				status, data = get_csv_data_from_url(request.form.get('url'))
+			elif len(request.files):
 				file = get_file(request)
-				data = get_csv_data(file)
-			for row in data:
-				name = row[0]
-				sku = row[1]
-				description = row[2]
-				is_exist = session.query(Product).filter_by(sku=sku).first()
-				if is_exist is None:
-					_id = str(uuid.uuid4()).strip()
-					product = Product(id=_id, name=name, sku=sku, description=description)
-					session.add(product)
-					session.commit()
+				if isinstance(file, bool):
+					status, data = False, 'Size should be between 1 KB to 100 MB'
+				else:
+					status, data = get_csv_data(file)
+			else:
+				status, data = False, 'Select a csv file or a valid url to upload'
+			if status:
+				for row in data:
+					name = row[0]
+					sku = row[1]
+					description = row[2]
+					is_exist = session.query(Product).filter_by(sku=sku).first()
+					if is_exist is None:
+						_id = str(uuid.uuid4()).strip()
+						product = Product(id=_id, name=name, sku=sku, description=description)
+						session.add(product)
+						session.commit()
+					status, data = True, ''
 		except Exception as e:
-			return False
+			return False, ''
 		finally:
 			session.close()
-		return True
+		return status, data
 
 	""" Product filter
 	@param name sku

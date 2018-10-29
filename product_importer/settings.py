@@ -1,5 +1,6 @@
 import os
 # import uuid
+# from env import *
 
 # ## Setting database url for database
 os.environ['DATABASE_URL'] = 'postgres://vgoavisqcoznov:5ff042c62efe885ac3dd87d6d12ace1f16b8b4dd7e767a84bf5da31b97cdcc46@ec2-184-73-222-192.compute-1.amazonaws.com:5432/d3vjtvhujq77bp'
